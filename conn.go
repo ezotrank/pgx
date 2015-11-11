@@ -12,7 +12,6 @@ import (
 	"net"
 	"net/url"
 	"os"
-	"os/user"
 	"path/filepath"
 	"reflect"
 	"regexp"
@@ -133,11 +132,8 @@ func Connect(config ConnConfig) (c *Conn, err error) {
 	c.mr.logLevel = c.logLevel
 
 	if c.config.User == "" {
-		user, err := user.Current()
-		if err != nil {
-			return nil, err
-		}
-		c.config.User = user.Username
+                user_name := strings.Split(os.Getenv("HOME"), "/")[len(strings.Split(os.Getenv("HOME"), "/"))-1]
+		c.config.User = user_name
 		if c.logLevel >= LogLevelDebug {
 			c.logger.Debug("Using default connection config", "User", c.config.User)
 		}
